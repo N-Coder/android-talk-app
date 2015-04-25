@@ -61,6 +61,7 @@ public class WeatherIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FETCH_WEATHER.equals(action)) {
+
                 if (intent.hasExtra(EXTRA_LATITUDE) && intent.hasExtra(EXTRA_LONGITUDE)) {
                     fetchWeather(String.format(API_URL_LOCATION, intent.getIntExtra(EXTRA_LATITUDE, 0), intent.getIntExtra(EXTRA_LONGITUDE, 0)));
                 } else {
