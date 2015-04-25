@@ -20,6 +20,8 @@ import java.io.IOException;
 class FetchWeatherTask extends AsyncTask<Double, Void, JSONObject> {
     private static final String API_URL_LOCATION = "http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f";
 
+    protected Exception exception;
+
     @Override
     protected JSONObject doInBackground(Double... params) {
         try {
@@ -37,11 +39,12 @@ class FetchWeatherTask extends AsyncTask<Double, Void, JSONObject> {
             } else {
                 //Server did not return 200 SUCCESS, throw as exception
                 response.getEntity().getContent().close();
-                throw new IOException(statusLine.getReasonPhrase());
+                throw new IOException(statusLine.getStatusCode() + ": " + statusLine.getReasonPhrase());
             }
         } catch (IOException | JSONException e) {
             //Could not communicate with server
             Log.e("FetchWeatherTask", "Could not fetch weather", e);
+            exception = e;
             return null;
         }
     }

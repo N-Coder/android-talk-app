@@ -1,7 +1,6 @@
 package de.unipassau.ieee.weatherDemo;
 
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,10 +8,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class MainActivity extends ActionBarActivity {
     @Override
@@ -81,6 +84,13 @@ public class MainActivity extends ActionBarActivity {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, getMainLooper());
         //getMainLooper() used for executing the callback (ignore for now)
+
+        //Additionally, query the last known location to update UI immediately
+        Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        if (location != null) {
+            //Fetch weather for lsat known Location
+            fetchWeather(location.getLatitude(), location.getLongitude());
+        }
     }
 
     /**
@@ -121,14 +131,35 @@ public class MainActivity extends ActionBarActivity {
             @Override
             protected void onPostExecute(JSONObject jsonObject) {
                 //Update the view
+                String message;
                 if (jsonObject != null) {
-                    ((TextView) findViewById(R.id.weatherText)).setText(jsonObject.toString());
-                    //TODO improve UI
+                    try {
+                        JSONObject conditions = jsonObject.getJSONObject("main");
+                        JSONObject weather = jsonObject.getJSONArray("weather").getJSONObject(0);
+
+                        double temperature = conditions.getDouble("temp") - 272.15;
+                        //int weatherId = weather.getInt("id");
+                        String weatherDescription = weather.getString("description");
+                        //String weatherIcon = weather.getString("icon");
+
+                        message = weatherDescription + ", " + Math.round(temperature) + " \u00B0C";
+                    } catch (JSONException e) {
+                        //malformed JSON response
+                        Log.e("Main", "Malformed server response", e);
+                        message = "Malformed server response";
+                    }
                 } else {
                     //Request failed (exception logged to console)
-                    //TODO update UI
-                    //TODO save exception internally and display it?
+                    if (exception instanceof IOException) {
+                        message = "Could not connect to server";
+                    } else if (exception instanceof JSONException) {
+                        message = "Malformed server response";
+                    } else {
+                        message = "Unknown exception";
+                    }
                 }
+                ((TextView) findViewById(R.id.weatherText)).setText(message);
+                //TODO improve UI
             }
         }.execute(lat, lon);
     }
