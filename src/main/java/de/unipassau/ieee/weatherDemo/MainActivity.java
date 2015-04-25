@@ -25,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         updateLocationForWeather();
+        //TODO also call from button or menu
     }
 
     @Override
@@ -78,7 +79,8 @@ public class MainActivity extends ActionBarActivity {
         };
         //Request update
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationManager.requestSingleUpdate(new Criteria(), listener, getMainLooper());
+        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, getMainLooper());
+        //getMainLooper() used for executing the callback (ignore for now)
     }
 
     /**
@@ -86,9 +88,11 @@ public class MainActivity extends ActionBarActivity {
      * for the given coordinates and update the UI.
      */
     private void fetchWeather(double lat, double lon) {
+        //Add UI callbacks to the FetchWeatherTask
         new FetchWeatherTask() {
             /**
              * Cancel the weather update if no internet is available.
+             * This method is executed on the UI thread before fetching the data in a background thread.
              */
             @Override
             protected void onPreExecute() {
@@ -97,17 +101,33 @@ public class MainActivity extends ActionBarActivity {
                 NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                 if (activeNetworkInfo == null || !activeNetworkInfo.isAvailable() || !activeNetworkInfo.isConnected()) {
                     cancel(true);
+                    //TODO update UI
                 }
             }
 
             /**
+             * This method is invoked on a background Thread in order to fetch the weather.
+             * See super implementation for details on how this HTTP request works.
+             */
+            @Override
+            protected JSONObject doInBackground(Double... params) {
+                return super.doInBackground(params); //only here so that I can add an additional JavaDoc comment
+            }
+
+            /**
              * Update the UI once this Task finishes.
+             * This method is executed on the UI thread after fetching the data in a background thread.
              */
             @Override
             protected void onPostExecute(JSONObject jsonObject) {
                 //Update the view
                 if (jsonObject != null) {
                     ((TextView) findViewById(R.id.weatherText)).setText(jsonObject.toString());
+                    //TODO improve UI
+                } else {
+                    //Request failed (exception logged to console)
+                    //TODO update UI
+                    //TODO save exception internally and display it?
                 }
             }
         }.execute(lat, lon);
