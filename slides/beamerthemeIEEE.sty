@@ -1,0 +1,154 @@
+% Copyright 2007 by Heiko Studt <studt@fim.uni-passau.de>
+% 2015 Marco Ziegaus <uni@marcoziegaus.de>
+
+\usepackage{dashrule}
+
+%\mode<presentation>
+
+%Makro f"ur den *letzten* Slide im Frame
+\def\islastslide#1#2{%
+  \ifnum\thepage<\beamer@endpageofframe%
+  #2%
+  \else%
+  #1%
+  \fi}
+
+\definecolor{IEEE}{rgb}{0,0.2,0.4}
+\definecolor{fsinfodark}{RGB}{0, 32, 109}
+\definecolor{fsinfobright}{RGB}{0, 64, 141}
+\newcommand<>{\bdashrule}{\only#1{\hbox{\hdashrule{\paperwidth}{0.4mm}{1mm 1mm}}}}
+
+\setbeamersize{sidebar width right=0cm}
+\setbeamersize{sidebar width left=0cm}
+%\setbeamersize{sidebar width right=2cm}
+%\setbeamercolor{sidebar right}{fg=IEEE!000,bg=fsinfobright!100}
+%\setbeamercolor{sidebar left}{fg=IEEE!000,bg=fsinfodark!100}
+%\setbeamertemplate{sidebar right}{}
+
+%TextPos-Package
+\setlength{\TPHorizModule}{\paperwidth}
+\setlength{\TPVertModule}{\paperheight}
+% \setlength{\TPHorizModule}{1cm}
+% \setlength{\TPHorizModule}{1cm}
+
+% ================================================================ Notizen ====
+\setbeamerfont{notes}{size=\tiny}
+\setbeamertemplate{note page}
+{
+  \usebeamerfont{notes}
+  \insertnote
+}
+
+% ================================================================ Titelseite ===
+\setbeamercolor{title titel}{fg=IEEE!100,bg=white}
+\setbeamerfont{title titel}{series=\bfseries,size=\LARGE}
+\setbeamercolor{title author}{fg=black!100,bg=white}
+\setbeamercolor{title date}{fg=black!100,bg=white}
+\setbeamerfont{title date}{series=\bfseries}
+\setbeamertemplate{title page}
+{
+  \vskip50pt
+  \begin{minipage}{0.8\paperwidth}
+  \begin{centering}
+    {\usebeamerfont{title titel}\usebeamercolor[fg]{title titel}\inserttitle} \\[0.5cm]
+    {\usebeamerfont{title author}\usebeamercolor[fg]{title author}\insertauthor} \\[0.5cm]
+  \end{centering}
+  \vskip15pt plus 1filll
+  \begin{center}
+    {\usebeamerfont{title date}\usebeamercolor[fg]{title date}\insertdate}
+  \end{center}
+  \end{minipage}
+}
+
+% ================================================================= Rest ===
+
+% Links und rechts sollen jeweils immer 1 cm Margin sein. Das bezieht sich (anders als der Name vermuten lässt) nicht nur auf Text, sondern auch auf eingebaute Grafiken.
+\setbeamersize{text margin right=1cm}
+\setbeamersize{text margin left=1cm}
+
+\setbeamercolor{frametitle box}{fg=white!100,bg=IEEE!100}
+\setbeamercolor{frametitle titel}{fg=white!100,bg=IEEE!100}
+\setbeamertemplate{frametitle}
+{
+  \vspace{-1mm}
+  % Blaue Box oben auf den Slides: ht: Height, dp: Depth, wd: Width
+  % \begin{beamercolorbox}[sep=12pt,ht=1.3cm,dp=0pt,tp=-8pt,wd=\paperwidth]{frametitle box}
+  % \begin{beamercolorbox}[sep=0pt,ht=1.7em,dp=0.9em,wd=\paperwidth,leftskip=1em]{frametitle box}
+  % This would work great, as sep=12 simply adds a padding around the text. However, it depends on the typesetting. Therefore, The box will be larger if the text contains a letter such as "g" or "y" as opposed to letters with a normal height.
+  % \begin{beamercolorbox}[sep=12pt,wd=\paperwidth]{frametitle box}
+  % Daher diese Konstruktion
+  \begin{beamercolorbox}[sep=0pt,ht=1.8em,dp=0.9em,wd=\paperwidth,leftskip=1em]{frametitle box}
+    \insertframetitle
+  \end{beamercolorbox}
+
+%   \begin{textblock*}{10cm}(12pt,0.4cm)
+%       \usebeamerfont{frametitle titel}\usebeamercolor[fg]{frametitle titel}
+%       \insertframetitle
+%   \end{textblock*}
+
+% Fachschaftslogo
+%  \begin{textblock}{0.2}(0.834,0.02)
+  \begin{textblock*}{0cm}(10.1cm,0.23cm)
+    \includegraphics[width=2cm]{pictures/IEEE/logo_trans}
+    %\includegraphics[width=2.2cm]{pictures/Fachschaft/logo_trans}
+  \end{textblock*}
+
+}
+
+% Kopfzeile (nicht der Frametitel)
+% \setbeamercolor{headline}{fg=black!50,bg=blue!15}
+% \setbeamercolor{head section}{fg=black!50,bg=blue!15}
+% \setbeamercolor{section in head/foot}{fg=white!100,bg=yellow!00} %Navigation
+% \setbeamertemplate{headline}
+% {
+%   \begin{beamercolorbox}{head section}
+%     \vskip2pt\insertsectionnavigationhorizontal{\paperwidth}{}{}\vskip2pt
+%   \end{beamercolorbox}%
+% }
+\setbeamertemplate{headline}{}
+
+% Ausschalten der Navigationssymbole
+\setbeamertemplate{navigation symbols}{}
+
+% Fußzeile
+\setbeamercolor{foot section}{fg=black!100,bg=yellow!00}
+\setbeamercolor{foot pagenr}{fg=white!100,bg=white!100}
+\setbeamercolor{foot pagenr last}{fg=green!100,bg=white!100}
+\setbeamercolor{foot titel}{fg=black!100,bg=yellow!00}
+\setbeamercolor{foot line}{fg=IEEE!100,bg=white!00}
+\setbeamertemplate{footline}
+{
+  \begin{beamercolorbox}{foot line}
+    %\hbox{\hdashrule{0.844\paperwidth}{0.4mm}{1mm 1mm}}%
+    %\hbox{\rule{2cm}{0.4mm}}
+    \bdashrule
+  \end{beamercolorbox}%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.422\paperwidth,ht=3ex,dp=1ex,leftskip=0.1cm]{foot section}
+    \insertsection
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.422\paperwidth,ht=3ex,dp=1ex,right]{foot section}
+  %  \insertsubsection
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=2cm,ht=3ex,dp=1ex,center]{foot pagenr}
+    \islastslide{{\color{red}   \insertframenumber/\inserttotalframenumber}}
+                {{\color{black} \insertframenumber/\inserttotalframenumber}}
+    \vfill
+    %\islastslide{$\surd$}{\visible<0>{$\surd$}}
+  \end{beamercolorbox}%
+  %\begin{beamercolorbox}[wd=.45\paperwidth,ht=4.5ex,dp=1ex,center]{foot titel}
+  %  \inserttitle
+  %\end{beamercolorbox}
+  }%
+}
+
+% Inhaltsverzeichnis
+% \setbeamerfont{section in toc}{size=\small,series*=eb}
+\setbeamercolor{section in toc}{fg=black!100}
+
+% Für Blöcke (Verwendung: \begin{block}<...>\end{block})
+% Der Titel soll blau sein, der Body schwarz.
+\setbeamercolor{block title}{fg=IEEE,bg=white}
+\setbeamercolor{block body}{fg=black,bg=white}
+% Für Aufzählungen: Die Bulletpoints sollen blau sein.
+\setbeamercolor{itemize item}{fg=IEEE}
