@@ -208,50 +208,8 @@ public class MainActivity extends Activity {
                 double windSpeed = wind.getDouble("speed");
                 double windDegree = wind.getDouble("deg");
                 int cloudiness = clouds.getInt("all");
-                //TODO: maybe fetch the city name with GeoCoder for better accuracy. Currently, Obersölden is shown for a location in Passau
-                //                String cityName = jsonObject.getString("name");
 
-                int iconId;
-                switch (weatherIconCode) {
-                    case "01d":
-                        iconId = R.drawable.clear_sky_day;
-                        break;
-                    case "01n":
-                        iconId = R.drawable.clear_sky_night;
-                        break;
-                    case "02d":
-                        iconId = R.drawable.few_clouds_day;
-                        break;
-                    case "02n":
-                        iconId = R.drawable.few_clouds_night;
-                        break;
-                    case "03d":
-                        iconId = R.drawable.scattered_clouds_day;
-                        break;
-                    case "04d":
-                        iconId = R.drawable.broken_clouds_day;
-                        break;
-                    case "09d":
-                        iconId = R.drawable.shower_rain_day;
-                        break;
-                    case "10d":
-                        iconId = R.drawable.rain_day;
-                        break;
-                    case "11d":
-                        iconId = R.drawable.thunderstorm_day;
-                        break;
-                    case "13d":
-                        iconId = R.drawable.snow_day;
-                        break;
-                    case "50d":
-                        iconId = R.drawable.mist_day;
-                        break;
-                    default:
-                        iconId = R.drawable.clear_sky_day;
-                        break;
-                }
-                Drawable weatherIcon = getResources().getDrawable(iconId);
-
+                Drawable weatherIcon = getWeatherStatusIcon(weatherIconCode);
                 textViewTemperature.setText(String.valueOf(Math.round(temperature)));
                 textViewWeatherStatus.setText(weatherDescription);
                 textViewCity.setText(cityName);
@@ -270,6 +228,49 @@ public class MainActivity extends Activity {
                 Log.e("Main", "Can't fetch address for location.");
             }
         }
+    }
+
+    private Drawable getWeatherStatusIcon(String weatherIconCode) {
+        int iconId;
+        switch (weatherIconCode) {
+            case "01d":
+                iconId = R.drawable.clear_sky_day;
+                break;
+            case "01n":
+                iconId = R.drawable.clear_sky_night;
+                break;
+            case "02d":
+                iconId = R.drawable.few_clouds_day;
+                break;
+            case "02n":
+                iconId = R.drawable.few_clouds_night;
+                break;
+            case "03d":
+                iconId = R.drawable.scattered_clouds_day;
+                break;
+            case "04d":
+                iconId = R.drawable.broken_clouds_day;
+                break;
+            case "09d":
+                iconId = R.drawable.shower_rain_day;
+                break;
+            case "10d":
+                iconId = R.drawable.rain_day;
+                break;
+            case "11d":
+                iconId = R.drawable.thunderstorm_day;
+                break;
+            case "13d":
+                iconId = R.drawable.snow_day;
+                break;
+            case "50d":
+                iconId = R.drawable.mist_day;
+                break;
+            default:
+                iconId = R.drawable.clear_sky_day;
+                break;
+        }
+        return getResources().getDrawable(iconId);
     }
 
     private String getWindDirection(double degree) {
