@@ -8,10 +8,163 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity">
 
-    <TextView
-            android:text="@string/hello_world"
+    <LinearLayout
+        android:id="@+id/layoutTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/textViewTemperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/weatherText"/>
+            android:textSize="50sp"
+            android:text="N/V"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:text=" °C"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTemperature"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="-15dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="in "/>
+        <TextView
+            android:id="@+id/textViewCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="N/V"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewWeatherStatusIcon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@id/layoutCity"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/clear_sky_day"
+        />
+    <TextView
+        android:id="@+id/textViewWeatherStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageViewWeatherStatusIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-25dp"
+        android:textSize="30sp"
+        android:text="N/V"
+        />
+
+    <TableLayout
+        android:id="@+id/layoutMisc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewWeatherStatus"
+        android:layout_marginTop="20dp"
+        >
+
+
+        <TableRow
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="Cloudiness"
+                />
+            <TextView
+                android:id="@+id/textViewCloudiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="N/V"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_weight="0"
+                android:textSize="25sp"
+                android:text=" %"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="Wind"
+                />
+            <TextView
+                android:id="@+id/textViewWind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="N/V"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="Humidity"
+                />
+            <TextView
+                android:id="@+id/textViewHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="N/V"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_weight="0"
+                android:textSize="25sp"
+                android:text=" %"/>
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/buttonRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:text="Refresh"/>
 
 </RelativeLayout>
