@@ -2,6 +2,7 @@ package de.unipassau.ieee.weatherDemo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -38,6 +39,8 @@ public class MainActivity extends Activity {
     private ImageView imageViewWeatherStatusIcon;
     private Button    buttonRefresh;
     private Location  latestLocation;
+    private long sunrise;
+    private long sunset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +84,18 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_location) {
+            //create an Intent to start another activity
+            Intent locationIntent = new Intent(this, LocationActivity.class);
+            //create a Bundle to give some arguments to the activity
+            Bundle arguments = new Bundle();
+            arguments.putDouble(LocationActivity.KEY_LATITUDE, latestLocation.getLatitude());
+            arguments.putDouble(LocationActivity.KEY_LONGITUDE, latestLocation.getLongitude());
+            arguments.putLong(LocationActivity.KEY_SUNRISE, sunrise);
+            arguments.putLong(LocationActivity.KEY_SUNSET, sunset);
+            //start the Activity with the prepared arguments
+            locationIntent.putExtras(arguments);
+            startActivity(locationIntent);
             return true;
         }
 
@@ -198,8 +211,9 @@ public class MainActivity extends Activity {
                 if (addressList.size() > 0) {
                     cityName = addressList.get(0).getLocality();
                 }
-                long sunrise = sys.getLong("sunrise");
-                long sunset = sys.getLong("sunset");
+                //*1000 to convert from UNIX timestamp to Java millis
+                sunrise = sys.getLong("sunrise")*1000;
+                sunset = sys.getLong("sunset")*1000;
                 String weatherDescription = weather.getString("description");
                 String weatherIconCode = weather.getString("icon");
                 // the temperature is given in Kelvin, therefore convert to Celsius (-272.15)
@@ -270,7 +284,7 @@ public class MainActivity extends Activity {
                 iconId = R.drawable.clear_sky_day;
                 break;
         }
-        return getResources().getDrawable(iconId);
+        return getResources().getDrawable(iconId, getTheme());
     }
 
     private String getWindDirection(double degree) {
