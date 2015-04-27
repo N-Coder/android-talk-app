@@ -2,10 +2,10 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity">
 
     <LinearLayout
@@ -14,20 +14,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/textViewTemperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:text="N/V"/>
+            android:text="23"
+            android:textSize="50sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:text=" °C"/>
+            android:text=" °C"
+            android:textSize="50sp"/>
 
 
     </LinearLayout>
@@ -39,21 +39,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutTemperature"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="-15dp"
+        android:layout_marginTop="10dp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="in "/>
+            android:text="in "
+            android:textSize="30sp"/>
+
         <TextView
             android:id="@+id/textViewCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="N/V"/>
+            android:text="N/V"
+            android:textSize="30sp"/>
     </LinearLayout>
 
     <ImageView
@@ -64,6 +65,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/clear_sky_day"
         />
+
     <TextView
         android:id="@+id/textViewWeatherStatus"
         android:layout_width="wrap_content"
@@ -71,8 +73,8 @@
         android:layout_below="@id/imageViewWeatherStatusIcon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-25dp"
-        android:textSize="30sp"
         android:text="N/V"
+        android:textSize="30sp"
         />
 
     <TableLayout
@@ -86,75 +88,84 @@
 
         <TableRow
             android:layout_marginTop="15dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="25sp"
                 android:text="Cloudiness"
+                android:textSize="25sp"
                 />
+
             <TextView
                 android:id="@+id/textViewCloudiness"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_weight="1"
-                android:textSize="25sp"
+                android:gravity="right"
                 android:text="N/V"
+                android:textSize="25sp"
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_weight="0"
-                android:textSize="25sp"
-                android:text=" %"/>
+                android:gravity="right"
+                android:text=" %"
+                android:textSize="25sp"/>
         </TableRow>
 
         <TableRow
             android:layout_marginTop="15dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="25sp"
                 android:text="Wind"
+                android:textSize="25sp"
                 />
+
             <TextView
                 android:id="@+id/textViewWind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_weight="1"
-                android:textSize="25sp"
+                android:gravity="right"
                 android:text="N/V"
+                android:textSize="25sp"
                 />
         </TableRow>
+
         <TableRow
             android:layout_marginTop="15dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="25sp"
                 android:text="Humidity"
+                android:textSize="25sp"
                 />
+
             <TextView
                 android:id="@+id/textViewHumidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_weight="1"
-                android:textSize="25sp"
+                android:gravity="right"
                 android:text="N/V"
+                android:textSize="25sp"
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:layout_weight="0"
-                android:textSize="25sp"
-                android:text=" %"/>
+                android:gravity="right"
+                android:text=" %"
+                android:textSize="25sp"/>
         </TableRow>
     </TableLayout>
 
@@ -165,6 +176,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
-        android:text="Refresh"/>
+        android:text="Refresh" />
 
 </RelativeLayout>

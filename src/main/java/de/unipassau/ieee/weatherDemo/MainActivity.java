@@ -45,8 +45,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // define the layout for this activity
         setContentView(R.layout.activity_main);
 
+        // get a reference to the view elements
         textViewTemperature = (TextView) findViewById(R.id.textViewTemperature);
         textViewWeatherStatus = (TextView) findViewById(R.id.textViewWeatherStatus);
         textViewCity = (TextView) findViewById(R.id.textViewCity);
