@@ -6,29 +6,69 @@
 
 % Bild einer (Sport-)Aktivität
 
+\begin{frame}[c,fragile]
+	\frametitle{Swing Button App}
+	\begin{lstlisting}
+	public static void main(String[] args) {
+	    JFrame myFrame = new JFrame();
+	    myFrame.addComponent(
+	        new JButton("Click me!"));
+	    myFrame.show();
+	    ...
+	}
+	\end{lstlisting}
+	\pause \vspace{0.5cm}
+	\begin{figure}
+	\includegraphics[width=\textwidth]{pictures/call-hierchy-swing.pdf}
+	\end{figure}
+\end{frame}
+
+\frame[t]{
+	\frametitle{Activities}
+	% TODO Niko: Graphik MVC <-> Activity - Service - Content Provider + Intents + Broadcast Receiver
+	\begin{itemize}
+		\item View: Activity
+		\item Controller: Service
+		\item (Model: Content Provider)
+		\item Kommunikation: Intents
+		\item Listener: BroadcastReceiver
+	\end{itemize}
+}
+
+\begin{frame}[c,fragile]
+	\frametitle{Android Button App}
+	\begin{lstlisting}[language=XML]
+	<manifest>
+	  <application label="ButtonApp">
+	    <activity name=".MainActivity" 
+	              label="Main Activity">
+        ...
+	</...>
+	\end{lstlisting}
+	\pause \vspace{0.5cm}
+	\begin{lstlisting}
+	class MainActivity extends Activity {
+	    @Override
+	    public void onCreate() {
+	        //TODO add Button
+	    }
+	}
+	\end{lstlisting}
+\end{frame}
+
 \frame[t]{
 	\frametitle{Inversion of control}
-	\begin{columns}[t]
-    \column{.5\textwidth}
-		\textbf{Swing}
-		\begin{itemize}
-			\item Classloader sucht Mainclass
-			\item Classloader ruft main() auf
-			\item main() erstellt JFrames nach belieben
-			\item main() fügt UI Elemente hinzu
-			\item main() wartet auf user input
-		\end{itemize}
-    \column{.5\textwidth}
-	    \textbf{Android}
-		\begin{itemize}
-			\item Android lädt Manifest
-			\item Android erstellt Activity
-			\item Android ruft onCreate() auf
-			\item onCreate() fügt UI Elemente hinzu
-			\item Android wartet auf user input
-		\end{itemize}
-    \end{columns}
-    %TODO Niko: als swimlane diagramm darstellen
+	\centering
+	\vspace{-0.2cm}
+	\textbf{Swing}
+	\begin{figure}
+	\includegraphics[width=0.8\textwidth]{pictures/call-hierchy-swing.pdf}
+	\end{figure}
+	\vspace{0.5cm}
+	\textbf{Android}
+	\begin{figure}
+	\includegraphics[width=0.8\textwidth]{pictures/call-hierchy-android.pdf}
+	\end{figure}
 }
 
 \frame[c]{
@@ -40,7 +80,7 @@
 }
 
 \frame[t]{
-	\frametitle{Weitere Komponenten}
+	\frametitle{Komponenten einer App}
 	% TODO Niko: Graphik MVC <-> Activity - Service - Content Provider + Intents + Broadcast Receiver
 	\begin{itemize}
 		\item View: Activity
