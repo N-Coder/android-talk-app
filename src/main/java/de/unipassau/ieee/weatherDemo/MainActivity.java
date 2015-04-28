@@ -39,9 +39,12 @@ public class MainActivity extends Activity {
     private ImageView imageViewWeatherStatusIcon;
     private Button    buttonRefresh;
     private Location  latestLocation;
-    private long sunrise;
-    private long sunset;
+    private long      sunrise;
+    private long      sunset;
 
+    /**
+     * onCreate(...) is called by the Android system when the activity is created. As MainActivity is the launching activity, this method is called upon program startup.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,8 @@ public class MainActivity extends Activity {
         textViewHumidity = (TextView) findViewById(R.id.textViewHumidity);
         imageViewWeatherStatusIcon = (ImageView) findViewById(R.id.imageViewWeatherStatusIcon);
         buttonRefresh = (Button) findViewById(R.id.buttonRefresh);
+
+        // react to clicks/taps on the "Refresh" button
         buttonRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,13 +71,21 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * onResume(...) is called by the Android system when an activity has been paused and then is resumed
+     * (e.g. when the user switches to another app and then switches back to
+     * this app). Furthermore, onResume(...) is always called directly after onCreate(...).
+     */
     @Override
     protected void onResume() {
         super.onResume();
         updateLocationForWeather();
-        //TODO also call from button or menu
     }
 
+    /**
+     * onCreateOptionsMenu(...) is called by the Android system when the menu (usually in the upper right corner) is created.
+     * We can choose, which resource file should be used to inflate the menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -80,6 +93,9 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    /**
+     * onOptionsItemSelected(...) is called by the Android system whenever the user clicks on a menu item. The clicked menu item is given as an parameter.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -87,18 +103,23 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        // If the menu item "location" is selected, start a new activity to display some information about the current location.
         if (id == R.id.action_location) {
-            //create an Intent to start another activity
+            //create an Intent to start the new activity
             Intent locationIntent = new Intent(this, LocationActivity.class);
-            //create a Bundle to give some arguments to the activity
+
+            // create a Bundle to give some arguments to the activity
             Bundle arguments = new Bundle();
             arguments.putDouble(LocationActivity.KEY_LATITUDE, latestLocation.getLatitude());
             arguments.putDouble(LocationActivity.KEY_LONGITUDE, latestLocation.getLongitude());
             arguments.putLong(LocationActivity.KEY_SUNRISE, sunrise);
             arguments.putLong(LocationActivity.KEY_SUNSET, sunset);
-            //start the Activity with the prepared arguments
+
+            // start the Activity with the prepared arguments
             locationIntent.putExtras(arguments);
             startActivity(locationIntent);
+
+            // Return true, as the click has been handled/consumed.
             return true;
         }
 
@@ -116,7 +137,9 @@ public class MainActivity extends Activity {
         LocationListener listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                //save this location as the latest used location
                 latestLocation = location;
+
                 //Fetch weather for new Location
                 Toast.makeText(MainActivity.this, "New location: " + location.getLatitude() + " | " + location.getLongitude(), Toast.LENGTH_SHORT).show();
                 fetchWeather(location.getLatitude(), location.getLongitude());
@@ -134,16 +157,18 @@ public class MainActivity extends Activity {
             public void onProviderDisabled(String provider) {
             }
         };
-        //Request update
+        // request update
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, getMainLooper());
         //getMainLooper() used for executing the callback (ignore for now)
 
-        //Additionally, query the last known location to update UI immediately
+        // Additionally, query the last known location from a passive provider (such as cell network or wifi) to update the UI immediately.
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         if (location != null) {
+            //save this location as the latest used location
             latestLocation = location;
-            //Fetch weather for lsat known Location
+
+            // fetch weather for last known Location
             fetchWeather(location.getLatitude(), location.getLongitude());
         }
     }
@@ -166,7 +191,9 @@ public class MainActivity extends Activity {
                 NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                 if (activeNetworkInfo == null || !activeNetworkInfo.isAvailable() || !activeNetworkInfo.isConnected()) {
                     cancel(true);
-                    //TODO update UI
+
+                    // show a Toast on the screen
+                    Toast.makeText(MainActivity.this, "No internet connection available.", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -191,47 +218,57 @@ public class MainActivity extends Activity {
         fetchWeatherTask.execute(lat, lon);
     }
 
+    /**
+     * Update the view with the data fetched from the internet.
+     *
+     * @param jsonObject A JSON object containing the current weather information, as provided by openweathermaps.org.
+     *                   Exemplary JSON string: {"coord":{"lon":13.45,"lat":48.57},"sys":{"message":0.0129,"country":"DE",
+     *                   "sunrise":1430193062,"sunset":1430244978},"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}]
+     *                   ,"base":"stations","main":{"temp":277.945,"temp_min":277.945,"temp_max":277.945,"pressure":976.14,"sea_level":1029.85,
+     *                   "grnd_level":976.14,"humidity":100},"wind":{"speed":7.06,"deg":303.003},"clouds":{"all":92},"rain":{"3h":1.3475},
+     *                   "dt":1430232044,"id":2855328,"name":"Passau","cod":200}
+     */
     private void updateWeatherData(JSONObject jsonObject) {
-        //Update the view
-        String message;
+        String message = null;
         if (jsonObject != null) {
             try {
-                // do not use the coords and city name provided by openweathermaps as they are inaccurate.
-                //                JSONObject coord = jsonObject.getJSONObject("coord");
+                // get the second level JSON objects
                 JSONObject sys = jsonObject.getJSONObject("sys");
-                JSONObject conditions = jsonObject.getJSONObject("main");
+                JSONObject main = jsonObject.getJSONObject("main");
                 JSONObject weather = jsonObject.getJSONArray("weather").getJSONObject(0);
                 JSONObject wind = jsonObject.getJSONObject("wind");
                 JSONObject clouds = jsonObject.getJSONObject("clouds");
 
-                //                double latitude = coord.getDouble("lat");
-                //                double longitude = coord.getDouble("lon");
-                double latitude = latestLocation.getLatitude();
-                double longitude = latestLocation.getLongitude();
-                Geocoder geocoder = new Geocoder(this);
-                List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
-                String cityName = "N/A";
-                if (addressList.size() > 0) {
-                    cityName = addressList.get(0).getLocality();
-                }
-                //*1000 to convert from UNIX timestamp to Java millis
-                sunrise = sys.getLong("sunrise")*1000;
-                sunset = sys.getLong("sunset")*1000;
+                // retrieve the weather information (temperature, wind speed, etc.) from the JSON objects
+                sunrise = sys.getLong("sunrise") * 1000; // *1000 to convert from UNIX timestamp to Java millis
+                sunset = sys.getLong("sunset") * 1000; // *1000 to convert from UNIX timestamp to Java millis
                 String weatherDescription = weather.getString("description");
                 String weatherIconCode = weather.getString("icon");
-                // the temperature is given in Kelvin, therefore convert to Celsius (-272.15)
-                double temperature = conditions.getDouble("temp") - 272.15;
-                int humidity = conditions.getInt("humidity");
+                double temperature = main.getDouble("temp") - 272.15; // the temperature is given in Kelvin, therefore convert to Celsius (-272.15)
+                int humidity = main.getInt("humidity");
                 double windSpeed = wind.getDouble("speed");
                 double windDegree = wind.getDouble("deg");
                 int cloudiness = clouds.getInt("all");
 
+                // use Geocoder to retrieve the city name from the location
+                double latitude = latestLocation.getLatitude();
+                double longitude = latestLocation.getLongitude();
+                Geocoder geocoder = new Geocoder(this);
+                List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                String cityName = "N/A"; // default city name
+                if (addressList.size() > 0) {
+                    cityName = addressList.get(0).getLocality();
+                }
+
+                // get the icon for the given weather
                 Drawable weatherIcon = getWeatherStatusIcon(weatherIconCode);
+
+                // set the values to the GUI
                 textViewTemperature.setText(String.valueOf(Math.round(temperature)));
                 textViewWeatherStatus.setText(weatherDescription);
                 textViewCity.setText(cityName);
-                //convert from mps to kmps
-                textViewWind.setText(String.valueOf(Math.round(windSpeed * 3.6)) + " km/h " + getWindDirection(windDegree));
+                windSpeed = Math.round(windSpeed * 3.6); // convert from mps to kmps
+                textViewWind.setText(String.valueOf(windSpeed + " km/h " + getWindDirection(windDegree)));
                 textViewCloudiness.setText(String.valueOf(cloudiness));
                 textViewHumidity.setText(String.valueOf(humidity));
                 imageViewWeatherStatusIcon.setImageDrawable(weatherIcon);
@@ -243,10 +280,20 @@ public class MainActivity extends Activity {
             }
             catch (IOException e) {
                 Log.e("Main", "Can't fetch address for location.");
+                message = "Can't fetch address for location.";
+            }
+            if (message != null && !message.isEmpty()) {
+                // if there was an error, show a Toast (notification) on the screen
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    /**
+     * Chooses the correct icon for the weatherIconCode.
+     *
+     * @return The correct icon as Drawable.
+     */
     private Drawable getWeatherStatusIcon(String weatherIconCode) {
         int iconId;
         switch (weatherIconCode) {
@@ -287,10 +334,17 @@ public class MainActivity extends Activity {
                 iconId = R.drawable.clear_sky_day;
                 break;
         }
-        return getResources().getDrawable(iconId, getTheme());
+        return getResources().getDrawable(iconId);
     }
 
+    /**
+     * Get the coarse wind direction (N, NE, E, SE, S, SW, W, NW) from the wind direction angle
+     *
+     * @param degree The wind direction in degrees (0 - 360)
+     * @return A String representing the coarse wind direction.
+     */
     private String getWindDirection(double degree) {
+        // subtract 22.5 to have "nice borders" such as 45, 90, 135, etc. rather than 22.5, 67.5, 112.5, etc.
         degree = degree - 22.5;
         if (degree <= 0 || degree >= 315) {
             return "N";
@@ -317,7 +371,7 @@ public class MainActivity extends Activity {
             return "NW";
         }
         else {
-            throw new IllegalArgumentException("degree must be between 0 and 360");
+            throw new IllegalArgumentException("Degree must be between 0 and 360");
         }
     }
 
