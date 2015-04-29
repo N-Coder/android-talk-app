@@ -33,14 +33,15 @@
 	\frametitle{Android App}
 	\begin{columns}[t]
 	\column{.7\textwidth}
+	\vspace{0.5cm}
 	\begin{itemize}
-	\item nur ein Fenster kann angezeigt werden \pause
+	\item nur ein Fenster \pause \medskip
 	\item weniger Prozessor- und Akkuleistung \pause \\
-		$\Rightarrow$ System muss mit Resourcen haushalten \pause
+		$\Rightarrow$ System muss mit Resourcen haushalten \\ \medskip \pause 
 	\item stärkere Systemintegration \\ (Notifications, Sensoren,...) \pause
 	\end{itemize}
 	\vspace{0.2cm}
-	$\Rightarrow$ \textbf{Activities} \\
+	{\large $\Rightarrow$ \textbf{Activities}} \\
 	\hspace{1cm}Container für graphische Anwendungen \pause
 
 	\column{.3\textwidth}
@@ -56,8 +57,10 @@
 	\begin{lstlisting}
 	class MainActivity extends Activity {
 	    @Override
-	    public void onCreate() {
-	        //TODO add Button
+	    public void onCreate(...) {
+	        super.onCreate(...);
+	        setContentView(R.id.layout);
+	        //TODO configure Button
 	    }
 	}
 	\end{lstlisting}
@@ -92,23 +95,23 @@
 	\centering
 	\includegraphics[width=\textwidth]{pictures/activity_lifecycle.png}
 	\end{figure}
-	\pause
-	\begin{columns}
-	\column{.5\textwidth}
-	\textbf{onCreate()}
-	\begin{itemize}
-	\item initialize UI \pause
-	\item start Animations \pause
-	\item connect to Sensors \pause
-	\end{itemize}
-	\column{.5\textwidth}
-	\textbf{onDestroy()}
-	\begin{itemize}
-	\item persist User Data \pause
-	\item stop Animations \pause
-	\item disconnect from Sensors
-	\end{itemize}
-	\end{columns}
+	% \pause
+	% \begin{columns}
+	% \column{.5\textwidth}
+	% \textbf{onCreate()}
+	% \begin{itemize}
+	% \item initialize UI \pause
+	% \item start Animations \pause
+	% \item connect to Sensors \pause
+	% \end{itemize}
+	% \column{.5\textwidth}
+	% \textbf{onDestroy()}
+	% \begin{itemize}
+	% \item persist User Data \pause
+	% \item stop Animations \pause
+	% \item disconnect from Sensors
+	% \end{itemize}
+	% \end{columns}
 }
 
 \frame[t]{
@@ -116,7 +119,7 @@
 	\begin{itemize}[<+->]
 		\item Hauptkommunikationsmittel zwischen Komponenten
 		\item ... enthalten explizites oder implizites Ziel \\
-			\textit{z.B. ``Öffne Facebook'' oder ``Sende Mail''}
+			\textit{z.B. ``Öffne MeineAndereActivity'' oder ``Sende Mail''}
 		\item ... können noch weitere Daten enthalten \\
 			\textit{z.B. Titel der Mail, URL einer Website, ...}
 		\item ... werden vom System an das jeweilige Ziel weitergeleitet
@@ -126,12 +129,13 @@
 	\column{.2\textwidth}
 	\column{.3\textwidth}
 	\begin{figure}
-	\includegraphics[height=3cm]<5->{pictures/implicit-intent-hierarchy.pdf}
+	\includegraphics[height=3cm]<5-6>{pictures/implicit-intent-hierarchy-1.png}
+	\includegraphics[height=3cm]<7>{pictures/implicit-intent-hierarchy-2.png}
 	\end{figure}
 	\pause
 	\column{.3\textwidth}
 	\begin{figure}
-	\includegraphics[height=3cm]{pictures/intent-choser.png}
+	\includegraphics[height=3cm]<6->{pictures/intent-choser.png}
 	\end{figure}
 	\column{.2\textwidth}
 	\end{columns}

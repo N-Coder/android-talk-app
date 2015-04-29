@@ -11,14 +11,14 @@
 \frame[c]{
 	\frametitle{Android Threading}
 	\begin{itemize}
-	\item \textbf{Android UIs sind single-threaded!} \pause
-	\item länger laufende Tasks auf dem UI Thread blockieren die App \\
-		$\Rightarrow$ \emph{App-Not-Responding} Dialog wird angezeigt \pause
+	\item \textbf{Android UIs sind single-threaded!} \pause \medskip
+	\item Tasks auf dem UI Thread blockieren die App \\
+		$\Rightarrow$ \emph{App-Not-Responding} Dialog wird angezeigt \pause \medskip
 	\item IO ist im UI Thread verboten \\
-		$\Rightarrow$ sonst \texttt{NetworkOnMainThreadException} \pause
+		$\Rightarrow$ sonst \texttt{NetworkOnMainThreadException} \pause \medskip
 	\item UI kann nur vom UI Thread aus aktualisiert werden  \\
-		$\Rightarrow$ sonst \texttt{CalledFromWrongThreadException} \pause
-	\item Threads, die von einer Activity aus gestartet wurden, \\ werden beendet sobald die Acitvity geschlossen wird \pause
+		$\Rightarrow$ sonst \texttt{CalledFromWrongThreadException} \pause \medskip
+	\item Threads, die von einer Activity aus gestartet wurden, \\ werden beendet sobald die Acitvity geschlossen wird \pause \medskip
 	\item Activities (und damit auch alle Threads) werden neu gestartet, \\ wenn der Bildschirm gedreht wird
 	\end{itemize}
 }
@@ -26,15 +26,15 @@
 \frame[c]{
 	\frametitle{Alternativen}
 	\begin{itemize}
-	\item Starte anderen Thread und aktualisiere UI mit \texttt{Activity.runOnUiThread(Runnable)} \\ \pause
-		$\Rightarrow$ \emph{Kommunikation mit UI trotzdem sehr aufwändig}\pause
+	\item Starte anderen Thread und aktualisiere UI mit \texttt{Activity.runOnUiThread(Runnable)} \\ \pause \smallskip
+		$\Rightarrow$ \emph{Kommunikation mit UI trotzdem sehr aufwändig}\pause \bigskip
 	\item Verwende \texttt{AsyncTask}  \pause
 		\begin{itemize}
 		\item \texttt{onPre/PostExecute()} auf dem UI Thread \pause
 		\item \texttt{doInBackground(...)} asynchron \pause
 		\item Parameter und Rückgabewerte \pause
 		\item Fortschritt mit \texttt{onProgressUpdate(...)} \pause
-		\item Abbrechen mit \texttt{cancel()} \pause
+		\item Abbrechen mit \texttt{cancel()} \pause \smallskip
 		\end{itemize}
 		$\Rightarrow$ \emph{wird immernoch zusammen mit Activity beendet}
 	\end{itemize}
@@ -43,9 +43,9 @@
 \begin{frame}[c]
 	\frametitle{Services}
 	\begin{itemize}
-	\item Eigenständige Komponente neben Activities \pause
-	\item läuft über längere Zeit im Hintergrund \pause
-	\item asynchron und unabhängig von Activities \pause
+	\item Eigenständige Komponente neben Activities \pause \medskip
+	\item läuft über längere Zeit im Hintergrund \pause \medskip
+	\item asynchron und unabhängig von Activities \pause \medskip
 	\item Aufgabenbereiche
 		\begin{itemize}
 		\item Dateiup- und download \pause
@@ -58,7 +58,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}[c]
 	\frametitle{Arten von Services}
 	\begin{itemize}
 	\item \textbf{IntentService}
@@ -68,12 +68,14 @@
 		\item Wertrückgabe in Form von Intents \pause
 		\end{itemize}
 
+	\bigskip
 	\item \textbf{Started Service}
 		\begin{itemize}
 		\item durch Intent(s) gestartet \pause
 		\item unbeschränkte Lebensdauer \pause
 		\end{itemize}
 
+	\bigskip
 	\item \textbf{Bound Service}
 		\begin{itemize}
 		\item hält Verbindung mit Activities, mit diesen direkte Kommunikation \pause
