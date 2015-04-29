@@ -122,6 +122,11 @@ public class MainActivity extends Activity {
             // Return true, as the click has been handled/consumed.
             return true;
         }
+        // If the item "About" is selected, start a new activity to display some legal information about this app.
+        else if (id == R.id.action_about) {
+            Intent aboutIntent = new Intent(this, AboutActivity.class);
+            startActivity(aboutIntent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
