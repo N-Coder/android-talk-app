@@ -2,9 +2,9 @@
 \frame[t]{
 	\frametitle{Threading Problems}
 	\begin{figure}
-	\includegraphics[width=\textwidth]<1>{pictures/errors-1.png}
-	\includegraphics[width=\textwidth]<2>{pictures/errors-2.png}
-	\includegraphics[width=\textwidth]<3>{pictures/errors-3.png}
+	\includegraphics[width=\textwidth]<1>{pictures/threading/errors-1.png}
+	\includegraphics[width=\textwidth]<2>{pictures/threading/errors-2.png}
+	\includegraphics[width=\textwidth]<3>{pictures/threading/errors-3.png}
 	\end{figure}
 }
 
@@ -19,7 +19,7 @@
 	\item UI kann nur vom UI Thread aus aktualisiert werden  \\
 		$\Rightarrow$ sonst \texttt{CalledFromWrongThreadException} \pause \medskip
 	\item Threads, die von einer Activity aus gestartet wurden, \\ werden beendet sobald die Acitvity geschlossen wird \pause \medskip
-	\item Activities (und damit auch alle Threads) werden neu gestartet, \\ wenn der Bildschirm gedreht wird
+	\item Activities (und damit auch alle Threads) werden neu erzeugt, \\ wenn der Bildschirm gedreht wird
 	\end{itemize}
 }
 
