@@ -25,11 +25,12 @@
 	\end{itemize}
 }
 
-\begin{frame}[fragile]
+\begin{frame}[c,fragile]
 	\frametitle{GPS}
 	\vspace{-3mm}
 	\begin{lstlisting}[language=Java]
-		LocationListener listener = new LocationListener() {
+		LocationListener listener;
+		listener = new LocationListener() {
 		    public void onLocationChanged(Location loc){
 		    	// fetch the weather using the provided
 		    	// location
@@ -45,7 +46,7 @@
 	
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[c,fragile]
 	\frametitle{GPS}
 	\begin{lstlisting}[language=Java]
 		// get a location manager
@@ -62,14 +63,14 @@
     \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[c,fragile]
 	\frametitle{GPS}
 	\begin{lstlisting}[language=Java]
 		// request continuous location updates each
 		// hour with a minimum distance of 1 km 
 		locationManager.requestLocationUpdates(
 		    LocationManager.GPS_PROVIDER,
-		        360000000, 1000, listener);
+		        1 * 60 * 60 * 1000, 1000, listener);
     \end{lstlisting}
     \pause
 	\begin{lstlisting}[language=Java]
@@ -80,7 +81,25 @@
     \end{lstlisting}    
 \end{frame}
 
+\begin{frame}[c]
+	\frametitle{Darf ich das?}
+	\pause
+	\begin{center}
+		\includegraphics[width=8cm]{pictures/permissions.png}
+	\end{center}
+\end{frame}
 
+\begin{frame}[c,fragile]
+	\frametitle{Ja!}
+	\begin{lstlisting}[language=XML]
+		<uses-permission android:name=
+		    "android.permission.ACCESS_FINE_LOCATION" />
+		<uses-permission android:name=
+		    "android.permission.ACCESS_NETWORK_STATE" />
+		<uses-permission android:name=
+		    "android.permission.INTERNET" />
+	\end{lstlisting}
+\end{frame}
 
 
 
