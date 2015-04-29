@@ -157,12 +157,13 @@ public class MainActivity extends Activity {
             public void onProviderDisabled(String provider) {
             }
         };
-        // request update
+        // request a location update
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, getMainLooper());
         //getMainLooper() used for executing the callback (ignore for now)
 
-        // Additionally, query the last known location from a passive provider (such as cell network or wifi) to update the UI immediately.
+        // Additionally, query the last known location from a passive provider to update the UI immediately.
+        // A passive provider can be any location provider. It does not request a
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         if (location != null) {
             //save this location as the latest used location
