@@ -1,5 +1,88 @@
 \section{Sensoren}
 \frame{
-	\frametitle{Sensoren}
-	TODO
+	\frametitle{Sensoren} \pause
+	\vspace{5mm}
+	\begin{itemize}
+		\item Physikalisch:
+		\begin{itemize} 
+			\item GPS
+			\vspace{2mm}
+			\item Accelerometer/Beschleunigung
+			\vspace{2mm}
+			\item Helligkeit
+			\vspace{2mm}
+			\item Mikrofon	
+		\end{itemize}
+		\vspace{3mm}
+		\item Virtuell:
+		\begin{itemize} 
+			\item Schrittzähler
+			\vspace{2mm}
+			\item Lineare Beschleunigung
+			\vspace{2mm}
+			\item Lage/Rotation
+		\end{itemize}
+	\end{itemize}
 }
+
+\begin{frame}[fragile]
+	\frametitle{GPS}
+	\vspace{-3mm}
+	\begin{lstlisting}[language=Java]
+		LocationListener listener = new LocationListener() {
+		    public void onLocationChanged(Location loc){
+		    	// fetch the weather using the provided
+		    	// location
+		        fetchWeather(loc.getLatitude(),
+		            loc.getLongitude()); 
+		    }
+
+		    public void onStatusChanged(...) {...}
+		    public void onProviderEnabled(...) {...}
+		    public void onProviderDisabled(...) {...}
+		};
+    \end{lstlisting}	
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{GPS}
+	\begin{lstlisting}[language=Java]
+		// get a location manager
+		LocationManager locationManager =
+		    (LocationManager) getSystemService(
+		        LOCATION_SERVICE);
+
+		// request a single location update
+		locationManager.requestSingleUpdate(
+		    LocationManager.GPS_PROVIDER, listener,
+		        getMainLooper());
+		// getMainLooper() used for executing the
+		// callback (ignore for now)
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{GPS}
+	\begin{lstlisting}[language=Java]
+		// request continuous location updates each
+		// hour with a minimum distance of 1 km 
+		locationManager.requestLocationUpdates(
+		    LocationManager.GPS_PROVIDER,
+		        360000000, 1000, listener);
+    \end{lstlisting}
+    \pause
+	\begin{lstlisting}[language=Java]
+		// just get the last known location
+		Location location = locationManager.
+		    getLastKnownLocation(
+		        LocationManager.PASSIVE_PROVIDER);
+    \end{lstlisting}    
+\end{frame}
+
+
+
+
+
+
+
