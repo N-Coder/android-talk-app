@@ -1,5 +1,84 @@
 \section{Threading}
-\frame{
-	\frametitle{Threading}
-	TODO
+\frame[t]{
+	\frametitle{Threading Problems}
+	\begin{figure}
+	\includegraphics[width=\textwidth]<1>{pictures/errors-1.png}
+	\includegraphics[width=\textwidth]<2>{pictures/errors-2.png}
+	\includegraphics[width=\textwidth]<3>{pictures/errors-3.png}
+	\end{figure}
 }
+
+\frame[c]{
+	\frametitle{Android Threading}
+	\begin{itemize}
+	\item \textbf{Android UIs sind single-threaded!} \pause
+	\item länger laufende Tasks auf dem UI Thread blockieren die App \\
+		$\Rightarrow$ \emph{App-Not-Responding} Dialog wird angezeigt \pause
+	\item IO ist im UI Thread verboten \\
+		$\Rightarrow$ sonst \texttt{NetworkOnMainThreadException} \pause
+	\item UI kann nur vom UI Thread aus aktualisiert werden  \\
+		$\Rightarrow$ sonst \texttt{CalledFromWrongThreadException} \pause
+	\item Threads, die von einer Activity aus gestartet wurden, \\ werden beendet sobald die Acitvity geschlossen wird \pause
+	\item Activities (und damit auch alle Threads) werden neu gestartet, \\ wenn der Bildschirm gedreht wird
+	\end{itemize}
+}
+
+\frame[c]{
+	\frametitle{Alternativen}
+	\begin{itemize}
+	\item Starte anderen Thread und aktualisiere UI mit \texttt{Activity.runOnUiThread(Runnable)} \\ \pause
+		$\Rightarrow$ \emph{Kommunikation mit UI trotzdem sehr aufwändig}\pause
+	\item Verwende \texttt{AsyncTask}  \pause
+		\begin{itemize}
+		\item \texttt{onPre/PostExecute()} auf dem UI Thread \pause
+		\item \texttt{doInBackground(...)} asynchron \pause
+		\item Parameter und Rückgabewerte \pause
+		\item Fortschritt mit \texttt{onProgressUpdate(...)} \pause
+		\item Abbrechen mit \texttt{cancel()} \pause
+		\end{itemize}
+		$\Rightarrow$ \emph{wird immernoch zusammen mit Activity beendet}
+	\end{itemize}
+}
+
+\begin{frame}[c]
+	\frametitle{Services}
+	\begin{itemize}
+	\item Eigenständige Komponente neben Activities \pause
+	\item läuft über längere Zeit im Hintergrund \pause
+	\item asynchron und unabhängig von Activities \pause
+	\item Aufgabenbereiche
+		\begin{itemize}
+		\item Dateiup- und download \pause
+		\item Datensynchronisierung \pause
+		\item Notifications \pause
+		\item Datenlogging \pause
+		\item Zeitgesteuerte Abläufe
+		\item ...
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Arten von Services}
+	\begin{itemize}
+	\item \textbf{IntentService}
+		\begin{itemize}
+		\item Arbeitspakete in Form von Intents \pause
+		\item arbeitet der Reihe nach ab und beendet sich automatisch \pause
+		\item Wertrückgabe in Form von Intents \pause
+		\end{itemize}
+
+	\item \textbf{Started Service}
+		\begin{itemize}
+		\item durch Intent(s) gestartet \pause
+		\item unbeschränkte Lebensdauer \pause
+		\end{itemize}
+
+	\item \textbf{Bound Service}
+		\begin{itemize}
+		\item hält Verbindung mit Activities, mit diesen direkte Kommunikation \pause
+		\item Lebenszeit an die der Activities gebunden
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
