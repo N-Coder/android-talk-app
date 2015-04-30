@@ -25,17 +25,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewAbout1"
             android:layout_marginTop="20dp"
-            android:text="Created by
-
-Niko Fink <niko@fink.bayern>
-
-and
-
-Marco Ziegaus <github@marcoziegaus.de>.
-
-
-Published under the BEER-WARE licence.
-
+            android:text="Created by\n
+Niko Fink &lt;niko@fink.bayern&gt;\n
+and\n
+Marco Ziegaus &lt;github@marcoziegaus.de&gt;.\n\n
+Published under the BEER-WARE licence.\n\n
 This app uses the public and free API of openweathermap.org."
             android:textSize="20sp"/>
 
